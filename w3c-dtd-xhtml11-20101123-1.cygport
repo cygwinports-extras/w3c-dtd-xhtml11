@@ -1,0 +1,37 @@
+CATEGORY="Text"
+SUMMARY="W3C XHTML 1.1 DTD"
+DESCRIPTION="This specification defines the Second Edition of XHTML 1.0,
+a reformulation of HTML 4 as an XML 1.0 application, and three DTDs
+corresponding to the ones defined by HTML 4."
+HOMEPAGE="http://www.w3.org/TR/xhtml11/"
+SRC_URI=${HOMEPAGE}"/xhtml11.tgz"
+SRC_DIR="xhtml11-${PV}"
+
+DEPEND="/usr/bin/xmlcatalog"
+
+src_compile() {
+	cd ${S}/DTD
+	echo $(sed -ne 's/^PUBLIC/--add public /gp;' xhtml11.cat) \
+		--add rewriteSystem "${HOMEPAGE}" "./" \
+		--add rewriteURI "${HOMEPAGE}" "./" \
+		${B}/catalog.xml | xargs xmlcatalog --noout --create
+}
+
+src_install() {
+	local dtddir=/usr/share/sgml/w3c/xhtml-1.1
+
+	cd ${S}
+	dodoc *.*
+	insinto $dtddir
+	doins DTD/*.* ${B}/catalog.xml
+
+	cat > ${C}/postinstall.sh <<_EOF
+/usr/bin/xmlcatalog --noout --add nextCatalog "file://$dtddir/catalog.xml" "" /etc/xml/catalog
+/usr/bin/install-catalog --add /etc/sgml/catalog $dtddir/xhtml11.cat
+_EOF
+
+	cat > ${C}/preremove.sh <<_EOF
+/usr/bin/xmlcatalog --noout --del "file://$dtddir/catalog.xml" /etc/xml/catalog
+/usr/bin/install-catalog --remove /etc/sgml/catalog $dtddir/xhtml11.cat
+_EOF
+}
