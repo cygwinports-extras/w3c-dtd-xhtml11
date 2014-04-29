@@ -1,3 +1,6 @@
+NAME="w3c-dtd-xhtml11"
+VERSION=20101123
+RELEASE=1
 CATEGORY="Text"
 SUMMARY="W3C XHTML 1.1 DTD"
 DESCRIPTION="This specification defines the Second Edition of XHTML 1.0,
@@ -5,7 +8,7 @@ a reformulation of HTML 4 as an XML 1.0 application, and three DTDs
 corresponding to the ones defined by HTML 4."
 HOMEPAGE="http://www.w3.org/TR/xhtml11/"
 SRC_URI=${HOMEPAGE}"/xhtml11.tgz"
-SRC_DIR="xhtml11-${PV}"
+SRC_DIR="xhtml11-${VERSION}"
 
 DEPEND="/usr/bin/xmlcatalog"
 
