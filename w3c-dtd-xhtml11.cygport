@@ -1,6 +1,6 @@
 NAME="w3c-dtd-xhtml11"
 VERSION=20101123
-RELEASE=1
+RELEASE=2
 CATEGORY="Text"
 SUMMARY="W3C XHTML 1.1 DTD"
 DESCRIPTION="This specification defines the Second Edition of XHTML 1.0,
@@ -9,6 +9,8 @@ corresponding to the ones defined by HTML 4."
 HOMEPAGE="http://www.w3.org/TR/xhtml11/"
 SRC_URI=${HOMEPAGE}"/xhtml11.tgz"
 SRC_DIR="xhtml11-${VERSION}"
+
+ARCH=noarch
 
 DEPEND="/usr/bin/xmlcatalog"
 
@@ -30,11 +32,11 @@ src_install() {
 
 	cat > ${C}/postinstall.sh <<_EOF
 /usr/bin/xmlcatalog --noout --add nextCatalog "file://$dtddir/catalog.xml" "" /etc/xml/catalog
-/usr/bin/install-catalog --add /etc/sgml/catalog $dtddir/xhtml11.cat
+/usr/bin/install-catalog --add /etc/sgml/${NAME}.cat $dtddir/xhtml11.cat
 _EOF
 
 	cat > ${C}/preremove.sh <<_EOF
 /usr/bin/xmlcatalog --noout --del "file://$dtddir/catalog.xml" /etc/xml/catalog
-/usr/bin/install-catalog --remove /etc/sgml/catalog $dtddir/xhtml11.cat
+/usr/bin/install-catalog --remove /etc/sgml/${NAME}.cat $dtddir/xhtml11.cat
 _EOF
 }
